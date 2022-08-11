@@ -3,6 +3,7 @@
 make down
 rm -rf ./data
 make up
+make schema
 
 until docker exec mysql-m sh -c 'mysql -u root -pQwerty123 -e ";"'
 do
