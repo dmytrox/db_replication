@@ -24,6 +24,7 @@ services:
     volumes:
       - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./data/mysql-s1:/var/lib/mysql
+      - ./dump:/dump
 
   mysql-s2:
     image: mysql:5.7
@@ -37,3 +38,4 @@ services:
     volumes:
       - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./data/mysql-s2:/var/lib/mysql
+      - ./dump:/dump
