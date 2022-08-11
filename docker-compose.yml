@@ -1,38 +1,39 @@
 services:
   mysql-m:
-    image: mysql:8
-    environment:
-      - MYSQL_ROOT_PASSWORD=qwerty123
-      - MYSQL_DATABASE=replication
+    image: mysql:5.7
+    env_file:
+      - ./cluster/master/.env
     container_name: "mysql-m"
     ports:
       - 3000:3306
     volumes:
-      # - ./cluster/master/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-       - ./data/mysql-m:/var/lib/mysql
+      - ./cluster/master/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./data/mysql-m:/var/lib/mysql
+      - ./dump:/dump
+      - ./scripts:/scripts
 
   mysql-s1:
-    image: mysql:8
-    environment:
-      - MYSQL_ROOT_PASSWORD=qwerty123
+    image: mysql:5.7
+    env_file:
+      - ./cluster/slaves/1/.env
     container_name: "mysql-s1"
     ports:
       - 3001:3306
     depends_on:
       - mysql-m
     volumes:
-      # - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./data/mysql-s1:/var/lib/mysql
 
   mysql-s2:
-    image: mysql:8
-    environment:
-      - MYSQL_ROOT_PASSWORD=qwerty123
+    image: mysql:5.7
+    env_file:
+      - ./cluster/slaves/2/.env
     container_name: "mysql-s2"
     ports:
       - 3002:3306
     depends_on:
       - mysql-m
     volumes:
-      # - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./cluster/slaves/1/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./data/mysql-s2:/var/lib/mysql
